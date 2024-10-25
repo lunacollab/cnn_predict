@@ -1,0 +1,105 @@
+# Advanced CNN Mathematical Equations
+
+## 1. Residual Block Equations
+```
+F(x) = W2·ReLU(BN(W1·x + b1)) + b2
+Output = ReLU(F(x) + x)
+```
+Where:
+- W1, W2 are weight matrices
+- b1, b2 are bias terms
+- BN is Batch Normalization
+- ReLU is Rectified Linear Unit
+
+## 2. Squeeze-and-Excitation Block
+### Squeeze Operation:
+```
+z = 1/W Σ(i=1 to W) x_i
+```
+
+### Excitation Operation:
+```
+s = σ(W2·ReLU(W1·z))
+Output = x * s
+```
+Where:
+- W1, W2 are fully connected layer weights
+- σ is the sigmoid function
+- * denotes channel-wise multiplication
+
+## 3. Custom Learning Rate Schedule
+### Warm-up Phase (epoch < warmup_epochs):
+```
+lr = initial_lr * (epoch + 1) / warmup_epochs
+```
+
+### Decay Phase (epoch ≥ warmup_epochs):
+```
+lr = initial_lr * decay_rate^((epoch - warmup_epochs) ÷ 10)
+```
+
+## 4. Advanced Metrics Calculations
+
+### Precision:
+```
+Precision = TP / (TP + FP)
+```
+
+### Recall:
+```
+Recall = TP / (TP + FN)
+```
+
+### F1 Score:
+```
+F1 = 2 * (Precision * Recall) / (Precision + Recall)
+```
+
+## 5. Statistical Feature Engineering
+
+### Standard Score (Z-score):
+```
+z = (x - μ) / σ
+```
+
+### Skewness:
+```
+skewness = E[((X - μ)/σ)³]
+```
+
+### Kurtosis:
+```
+kurtosis = E[((X - μ)/σ)⁴] - 3
+```
+
+## 6. Batch Normalization
+```
+BN(x) = γ * (x - μB)/√(σB² + ε) + β
+```
+Where:
+- μB is the batch mean
+- σB² is the batch variance
+- γ, β are learnable parameters
+- ε is a small constant for numerical stability
+
+## 7. Adam Optimizer with Gradient Clipping
+### Update rules with gradient clipping:
+```
+g̃ = clip(g, -c, c)  # c is clip value
+m_t = β1*m_{t-1} + (1-β1)*g̃
+v_t = β2*v_{t-1} + (1-β2)*g̃²
+m̂_t = m_t/(1-β1^t)
+v̂_t = v_t/(1-β2^t)
+θ_t = θ_{t-1} - α*m̂_t/√(v̂_t + ε)
+```
+
+## 8. Cross-Entropy Loss with Label Smoothing
+```
+L = -Σ(i=1 to C) y'_i * log(p_i)
+```
+Where:
+```
+y'_i = (1 - α)*y_i + α/C
+```
+- α is the smoothing parameter
+- C is the number of classes

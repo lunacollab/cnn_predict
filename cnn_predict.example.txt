@@ -1,0 +1,180 @@
+# CNN Mathematical Calculations Examples
+
+## 1. Convolution Layer Calculation
+Let's calculate a simple 2D convolution:
+
+```
+Input Matrix (3x3):
+[1  2  3]
+[4  5  6]
+[7  8  9]
+
+Kernel (2x2):
+[1  0]
+[0  1]
+
+Step-by-step calculation for first output element:
+(1 × 1) + (2 × 0) + (4 × 0) + (5 × 1) = 1 + 0 + 0 + 5 = 6
+
+Output Matrix (2x2):
+[6   7]
+[9   10]
+```
+
+## 2. Batch Normalization Example
+Given batch of values: [2, 4, 6, 8, 10]
+
+```
+1. Calculate mean (μ):
+μ = (2 + 4 + 6 + 8 + 10)/5 = 6
+
+2. Calculate variance (σ²):
+σ² = [(2-6)² + (4-6)² + (6-6)² + (8-6)² + (10-6)²]/5
+   = [16 + 4 + 0 + 4 + 16]/5
+   = 40/5 = 8
+
+3. Normalize (with ε = 0.001):
+For x = 2:
+x̂ = (2-6)/√(8 + 0.001) = -4/2.83 = -1.41
+
+Complete normalized batch:
+[-1.41, -0.71, 0, 0.71, 1.41]
+```
+
+## 3. Adam Optimizer Example
+Consider gradient g = 0.1, with parameters:
+- β₁ = 0.9 (momentum)
+- β₂ = 0.999 (RMSprop)
+- α = 0.001 (learning rate)
+- ε = 1e-8
+
+```
+For first iteration (t=1):
+m₁ = 0.9 × 0 + 0.1 × 0.1 = 0.01
+v₁ = 0.999 × 0 + 0.001 × (0.1)² = 0.00001
+
+Bias correction:
+m̂₁ = 0.01/(1-0.9¹) = 0.1
+v̂₁ = 0.00001/(1-0.999¹) = 0.01
+
+Parameter update:
+θ₁ = θ₀ - 0.001 × 0.1/√(0.01 + 1e-8) = θ₀ - 0.001
+```
+
+## 4. Softmax Function Example
+For logits z = [2.0, 1.0, 0.1]:
+
+```
+1. Calculate exponentials:
+e^2.0 = 7.389
+e^1.0 = 2.718
+e^0.1 = 1.105
+
+2. Sum of exponentials:
+total = 7.389 + 2.718 + 1.105 = 11.212
+
+3. Softmax probabilities:
+p₁ = 7.389/11.212 = 0.659 (65.9%)
+p₂ = 2.718/11.212 = 0.242 (24.2%)
+p₃ = 1.105/11.212 = 0.099 (9.9%)
+```
+
+## 5. Cross-Entropy Loss Example
+Given:
+- True labels: [1, 0, 0]
+- Predicted probabilities: [0.659, 0.242, 0.099]
+
+```
+Loss = -Σ(y_i × log(p_i))
+     = -(1 × log(0.659) + 0 × log(0.242) + 0 × log(0.099))
+     = -(log(0.659))
+     = -(-0.417)
+     = 0.417
+```
+
+## 6. Gradient Clipping Example
+Given gradients: [0.5, 2.0, -3.0, 1.5]
+Clip norm = 2.0
+
+```
+1. Calculate L2 norm:
+L2 = √(0.5² + 2.0² + (-3.0)² + 1.5²)
+   = √(0.25 + 4 + 9 + 2.25)
+   = √15.5
+   = 3.937
+
+2. Scaling factor:
+scale = min(1, clip_norm/L2)
+     = min(1, 2.0/3.937)
+     = 0.508
+
+3. Clipped gradients:
+[0.5 × 0.508, 2.0 × 0.508, -3.0 × 0.508, 1.5 × 0.508]
+= [0.254, 1.016, -1.524, 0.762]
+```
+
+## 7. Feature Engineering Calculations
+For data points: [2, 4, 6, 8, 10]
+
+```
+1. Mean:
+μ = (2 + 4 + 6 + 8 + 10)/5 = 6
+
+2. Standard Deviation:
+σ = √([(2-6)² + (4-6)² + (6-6)² + (8-6)² + (10-6)²]/5)
+  = √(40/5)
+  = √8
+  = 2.83
+
+3. Skewness:
+s = (1/5) × Σ((x_i - μ)/σ)³
+  = (1/5) × [(-4/2.83)³ + (-2/2.83)³ + (0/2.83)³ + (2/2.83)³ + (4/2.83)³]
+  = 0 (symmetric distribution)
+```
+
+## 8. Precision-Recall Calculation
+Given confusion matrix:
+```
+True Positive (TP) = 50
+False Positive (FP) = 10
+False Negative (FN) = 5
+True Negative (TN) = 35
+
+Precision = TP/(TP + FP)
+         = 50/(50 + 10)
+         = 0.833 (83.3%)
+
+Recall = TP/(TP + FN)
+       = 50/(50 + 5)
+       = 0.909 (90.9%)
+
+F1 Score = 2 × (Precision × Recall)/(Precision + Recall)
+         = 2 × (0.833 × 0.909)/(0.833 + 0.909)
+         = 0.870 (87.0%)
+```
+
+## 9. Learning Rate Schedule Example
+For 20 epochs, with:
+- initial_lr = 0.001
+- warmup_epochs = 5
+- decay_rate = 0.1
+
+```
+Epoch 1 (Warmup):
+lr = 0.001 × (1/5) = 0.0002
+
+Epoch 3 (Warmup):
+lr = 0.001 × (3/5) = 0.0006
+
+Epoch 5 (Warmup):
+lr = 0.001 × (5/5) = 0.001
+
+Epoch 10 (Decay):
+lr = 0.001 × (0.1)⁰ = 0.001
+
+Epoch 15 (Decay):
+lr = 0.001 × (0.1)¹ = 0.0001
+
+Epoch 20 (Decay):
+lr = 0.001 × (0.1)¹ = 0.0001
+```
